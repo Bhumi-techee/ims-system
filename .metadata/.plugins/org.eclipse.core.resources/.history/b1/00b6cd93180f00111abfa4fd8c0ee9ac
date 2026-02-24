@@ -1,0 +1,26 @@
+package com.ims.controller;
+
+import com.ims.entity.Invoice;
+import com.ims.service.InvoiceService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/invoices")
+@CrossOrigin
+public class InvoiceController {
+
+    @Autowired
+    private InvoiceService invoiceService;
+
+    @PostMapping
+    public Invoice create(@RequestBody Invoice invoice) {
+        return invoiceService.create(invoice);
+    }
+
+    @GetMapping
+    public List<Invoice> getAll() {
+        return invoiceService.getAll();
+    }
+}
