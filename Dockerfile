@@ -1,17 +1,16 @@
-# Step 1: Build the backend
-FROM maven:3.8.1-openjdk-17-slim AS build
+# Stage 1: Build the backend project
+FROM maven:3.8.4-openjdk-17 AS build
 WORKDIR /app
-# Copy the backend folder from your repo
+# Copy only the backend folder from your GitHub repo
 COPY ims-backend /app/ims-backend
 WORKDIR /app/ims-backend
-# Build the jar
+# Run the build to create the JAR file
 RUN mvn clean package -DskipTests
 
-# Step 2: Run the application
+# Stage 2: Run the application
 FROM openjdk:17-slim
 WORKDIR /app
-# Copy the built jar from the build stage
+# Copy the built jar from the previous stage
 COPY --from=build /app/ims-backend/target/*.jar app.jar
 EXPOSE 8080
-# Standard command to run the jar
-CMD ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
