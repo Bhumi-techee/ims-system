@@ -1,14 +1,14 @@
 # Stage 1: Build the backend project
-FROM maven:3.8.4-openjdk-17 AS build
+FROM maven:3.8.8-eclipse-temurin-17 AS build
 WORKDIR /app
-# Copy only the backend folder from your GitHub repo
+# Copy the backend folder from your repo
 COPY ims-backend /app/ims-backend
 WORKDIR /app/ims-backend
-# Run the build to create the JAR file
+# Run the maven build
 RUN mvn clean package -DskipTests
 
 # Stage 2: Run the application
-FROM openjdk:17-slim
+FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 # Copy the built jar from the previous stage
 COPY --from=build /app/ims-backend/target/*.jar app.jar
